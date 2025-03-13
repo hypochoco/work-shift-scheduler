@@ -176,7 +176,6 @@ class Scheduler:
 
         r = []
         st = [ 24*x//3 for x in range(3) ]
-        print(st)
         for i in range(self.config.n_employees):
             rr = []
             for j in range(self.config.n_days):
