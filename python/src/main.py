@@ -77,7 +77,7 @@ def main(args):
     
     resultdict = {}
     resultdict["Instance"] = filename
-    resultdict["Time"] = timer.getElapsed()
+    resultdict["Time"] = round(timer.getElapsed(), 2)
     resultdict["Result"] = str(solution.n_fails)
     if solution.is_solution:
         serialized_schedule = ... #Serialize Schedule TODO get model solution
