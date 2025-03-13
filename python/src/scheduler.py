@@ -127,13 +127,14 @@ class Scheduler:
             # constraint -- min daily, min shifts
             self.model.add( sum_of(x[1]*min(x[0], 1) for x in day) >= self.config.min_daily )
             for j in range(1, self.config.n_shifts):
-                self.model.add( sum_of(min(x[0], 1) for x in day) >= self.config.min_shifts[i][j] )
+                self.model.add( count([x[0] for x in day], j) >= self.config.min_shifts[i][j] )
         
         # constraint -- training, max total night shift, ...
         for i in range(self.config.n_employees):
             t_rep = [u[i] for u in self.rep[:4]]
+            n_rep = [u[i] for u in self.rep]
             self.model.add( all_diff([x[0] for x in t_rep]) )
-            self.model.add( count([x[0] for x in t_rep], self.NIGHT_SHIFT) <= self.config.employee_max_total_night_shifts )
+            self.model.add( count([x[0] for x in n_rep], self.NIGHT_SHIFT) <= self.config.employee_max_total_night_shifts )
             for j in range(0, self.config.n_days, self.config.employee_max_consecutive_night_shifts): # consec night shift
                 s_rep = [v[i] for v in self.rep[j:j+self.config.employee_max_consecutive_night_shifts]]
                 if len(s_rep) == 0: continue

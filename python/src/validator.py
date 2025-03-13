@@ -2,7 +2,6 @@
 # runs validation on results.log
 
 import json
-from pathlib import Path
 from cpinstance import CPInstance
 
 d = []
@@ -13,11 +12,25 @@ with open("results.log", "r") as f:
             d.append((l["Instance"], l["Solution"]))
         except:
             print("warning: error reading file")
-            break
-
+            break # NOTE: end of file
 for i, s in d:
-    input_file = Path("../input/"+i)
-    filename = input_file.name
-    cpinstanct = CPInstance.load(filename)
+    cpi = CPInstance.load("input/"+i)
+    valid = True
+    note = ""
 
-    break
+    raw = s.split(" ")
+    for _ in range(cpi.n_days):
+        for _ in range(cpi.n_employees):
+            
+            # 
+
+    # respect shifts -> off shift, 0-8, 8-16, 16-24
+    # minDemandDayShift[day][shift] -> number of employees on day shift
+    # minDailyOperation -> min hours daily
+    # training requirement
+    # no more than 8 hours, no less than 4 hours
+    # at most 40 per week, no less than 20 per week
+    # total night shifts
+    # consecutive night shifts
+
+    print(f"instance {i}: {"valid" if valid else "invalid " + note}")
