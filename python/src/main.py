@@ -82,7 +82,7 @@ def main(args):
     if solution.is_solution:
         serialized_schedule = ... # Serialize Schedule TODO get model solution
         # visualize(solution.schedule) # Uncomment to see Gant chart
-        generateVisualizerInput(scheduler.config.n_employees,scheduler.config.n_days,solution.schedule) # Uncomment to generate vis file
+        # generateVisualizerInput(scheduler.config.n_employees,scheduler.config.n_days,solution.schedule) # Uncomment to generate vis file
         resultdict["Solution"] = " ".join([" ".join([" ".join(map(str, y)) for y in x]) for x in solution.schedule]) # TODO  write solution to result dictionary
     print(json.dumps(resultdict))
 

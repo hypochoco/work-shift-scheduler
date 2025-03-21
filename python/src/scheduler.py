@@ -149,7 +149,7 @@ class Scheduler:
             Workers = 1,
             TimeLimit = 300,
             #Do not change the above values 
-            SearchType="DepthFirst" # Uncomment for part 2
+            SearchType="DepthFirst", # Uncomment for part 2
             # LogVerbosity = "Verbose"
         )
         self.model.set_parameters(params)    
@@ -160,7 +160,7 @@ class Scheduler:
         # flat_var = [e for m in self.rep for r in m for e in r]
         # self.model.set_search_phases([search_phase(flat_var)])
 
-        # test 02
+        # test 02 -> best performing
         var_sel = [select_smallest(self.model.domain_size()), select_random_var()]
         val_sel = select_largest(self.model.value())
         flat_var = [e for m in self.rep for r in m for e in r]
@@ -195,10 +195,47 @@ class Scheduler:
         # maxDomainMax = search_phase(flat_var, var_sel, val_sel)
         # self.model.set_search_phases([maxDomainMax])
 
+        # # test 09, 10
+        #     # training phase, rest of the schedule phase
+        #     # minmax on both phases
+        #     # 10 -> fail limit
+        # training_vars = [e for m in self.rep[:4] for r in m for e in r]
+        # minmax_training = search_phase(training_vars, [select_smallest(self.model.domain_size()), select_random_var()], select_largest(self.model.value()))
+        # flat_var = [e for m in self.rep[4:] for r in m for e in r]
+        # minmax_flat = search_phase(flat_var, [select_smallest(self.model.domain_size()), select_random_var()], select_largest(self.model.value()))
+        # self.model.set_search_phases([minmax_training, minmax_flat])
 
+        # # test 11 -> not working?
+        # phases = []
+        # training_vars = [e for m in self.rep[:4] for r in m for e in r]
+        # minmax_training = search_phase(training_vars, 
+        #     [select_smallest(self.model.var_index(training_vars)), select_random_var()], 
+        #     select_largest(self.model.value())
+        # )
+        # # phases.append(minmax_training)
 
+        # flat_var = [e for m in self.rep for r in m for e in r]
+        # minmax_flat = search_phase(flat_var, [select_smallest(self.model.domain_size()), select_random_var()], select_largest(self.model.value()))
+        # # phases.append(minmax_flat)
         
+        # self.model.set_search_phases([minmax_flat])
+        
+        # notes
+            # random restarts
+            # fail limit?
+            # phases
+                # training pahse
+                # employee phase
+                # monthly phase
 
+        # # random restarts
+        # seed = 0
+        # limit = 100
+        # while not (solution:=self.model.solve()).is_solution(): 
+        #     print("derp ", seed, limit)
+        #     self.model.set_parameters(CpoParam("RandomSeed", seed))
+        #     self.model.set_parameters(CpoParam("FailLimit", limit))
+        #     seed, limit = 1+seed, 100*limit
 
         solution = self.model.solve()
         n_fails = solution.get_solver_info(CpoSolverInfos.NUMBER_OF_FAILS)
