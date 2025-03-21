@@ -149,11 +149,57 @@ class Scheduler:
             Workers = 1,
             TimeLimit = 300,
             #Do not change the above values 
-            # SearchType="DepthFirst" Uncomment for part 2
+            SearchType="DepthFirst" # Uncomment for part 2
             # LogVerbosity = "Verbose"
         )
-        self.model.set_parameters(params)       
-       
+        self.model.set_parameters(params)    
+
+        # value selector / chooser
+
+        # # test01 
+        # flat_var = [e for m in self.rep for r in m for e in r]
+        # self.model.set_search_phases([search_phase(flat_var)])
+
+        # test 02
+        var_sel = [select_smallest(self.model.domain_size()), select_random_var()]
+        val_sel = select_largest(self.model.value())
+        flat_var = [e for m in self.rep for r in m for e in r]
+        minDomainMax = search_phase(flat_var, var_sel, val_sel)
+        self.model.set_search_phases([minDomainMax])
+
+        # # test 03
+        # var_sel = [select_smallest(self.model.domain_size()), select_random_var()]
+        # val_sel_smallest = select_smallest(self.model.value())
+        # flat_var = [e for m in self.rep for r in m for e in r]
+        # minDomainMin = search_phase(flat_var, var_sel, val_sel_smallest)
+        # self.model.set_search_phases([minDomainMin])
+
+        # # test 04, 05, 06
+        # flat_var_d = [r[0] for m in self.rep for r in m]
+        # flat_var_h = [r[1] for m in self.rep for r in m]
+        # minDomainMax_d = search_phase(flat_var_d, [select_smallest(self.model.domain_size())], select_largest(self.model.value()))
+        # minDomainMax_h = search_phase(flat_var_h, [select_smallest(self.model.domain_size())], select_largest(self.model.value()))
+        # self.model.set_search_phases([minDomainMax_d, minDomainMax_h])
+
+        # # test 07 -> maxDomainMin
+        # var_sel = [select_largest(self.model.domain_size()), select_random_var()]
+        # val_sel = select_smallest(self.model.value())
+        # flat_var = [e for m in self.rep for r in m for e in r]
+        # maxDomainMin = search_phase(flat_var, var_sel, val_sel)
+        # self.model.set_search_phases([maxDomainMin])
+
+        # # test 08
+        # var_sel = [select_largest(self.model.domain_size()), select_random_var()]
+        # val_sel = select_largest(self.model.value())
+        # flat_var = [e for m in self.rep for r in m for e in r]
+        # maxDomainMax = search_phase(flat_var, var_sel, val_sel)
+        # self.model.set_search_phases([maxDomainMax])
+
+
+
+        
+
+
         solution = self.model.solve()
         n_fails = solution.get_solver_info(CpoSolverInfos.NUMBER_OF_FAILS)
         if not solution.is_solution():
